@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2dc45889-bc1b-4f5f-810b-f17f4c90039b" name="Changes" comment="feat: hello" />
+    <list default="true" id="2dc45889-bc1b-4f5f-810b-f17f4c90039b" name="Changes" comment="build: remove update dependency graph">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728044695126</updated>
-      <workItem from="1728037928324" duration="990000" />
+      <workItem from="1728037928324" duration="1648000" />
     </task>
     <task id="LOCAL-00001" summary="feat: hello">
       <option name="closed" value="true" />
@@ -79,7 +81,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728038844890</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="build: remove update dependency graph">
+      <option name="closed" value="true" />
+      <created>1728038935275</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728038935275</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,6 +97,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: hello" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: hello" />
+    <MESSAGE value="build: remove update dependency graph" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: remove update dependency graph" />
   </component>
 </project>
