@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2dc45889-bc1b-4f5f-810b-f17f4c90039b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/lt/bongibau/behelpfull/BeHelpfull.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/workflows/maven.yml" afterDir="false" />
+    <list default="true" id="2dc45889-bc1b-4f5f-810b-f17f4c90039b" name="Changes" comment="feat: hello">
+      <change beforePath="$PROJECT_DIR$/workflows/maven.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,11 +63,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728044695126</updated>
-      <workItem from="1728037928324" duration="810000" />
+      <workItem from="1728037928324" duration="902000" />
     </task>
+    <task id="LOCAL-00001" summary="feat: hello">
+      <option name="closed" value="true" />
+      <created>1728038766048</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728038766048</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: hello" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: hello" />
   </component>
 </project>
