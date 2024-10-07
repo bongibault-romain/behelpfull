@@ -117,7 +117,8 @@ public class UserManager {
                 id,
                 username,
                 password,
-                birthOn
+                birthOn,
+                validatorId
         );
     }
 
@@ -236,7 +237,7 @@ public class UserManager {
                 result.getString("password")
         );
     }
-    
+
     @Nullable
     public Validator createValidator(String username, String password) throws SQLException {
         Integer id = this.createUser(username, password);
