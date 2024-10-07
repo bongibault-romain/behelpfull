@@ -7,9 +7,7 @@ import lt.bongibau.behelpfull.models.Validator;
 import lt.bongibau.behelpfull.models.Volunteer;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserManager {
 
