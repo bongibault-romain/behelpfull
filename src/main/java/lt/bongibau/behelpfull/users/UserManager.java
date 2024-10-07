@@ -108,6 +108,7 @@ public class UserManager {
         );
     }
 
+    @Nullable
     public Asker createAsker(String username, String password, Date birthOn, @Nullable Integer validatorId) throws SQLException {
         Integer id = this.createUser(username, password);
         if (id == null) return null;
