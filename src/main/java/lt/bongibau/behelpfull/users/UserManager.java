@@ -30,6 +30,20 @@ public class UserManager {
         return result;
     }
 
+    public User getUser(String username) throws SQLException {
+        User result = this.getAsker(username);
+
+        if (result == null) {
+            result = this.getVolunteer(username);
+        }
+
+        if (result == null) {
+            result = this.getValidator(username);
+        }
+
+        return result;
+    }
+
     @Nullable
     public Asker getAsker(int id) throws SQLException {
         //Prepare une requete SQL pour la BDD à laquelle nous sommes connectés
