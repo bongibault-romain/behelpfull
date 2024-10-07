@@ -48,7 +48,8 @@ public class UserManager {
                 result.getInt("id"),
                 result.getString("username"),
                 result.getString("password"),
-                result.getDate("birth_on")
+                result.getDate("birth_on"),
+                result.getInt("validator_id")
         );
     }
 
