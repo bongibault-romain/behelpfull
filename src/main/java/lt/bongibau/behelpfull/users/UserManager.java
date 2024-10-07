@@ -245,7 +245,7 @@ public class UserManager {
         if (!result.next()) {
             return null;
         }
-
+        
         return new Validator(
                 result.getInt("id"),
                 result.getString("username"),
