@@ -7,9 +7,7 @@ import lt.bongibau.behelpfull.models.Validator;
 import lt.bongibau.behelpfull.models.Volunteer;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserManager {
 
@@ -49,6 +47,45 @@ public class UserManager {
                 result.getString("username"),
                 result.getString("password"),
                 result.getDate("birth_on")
+        );
+    }
+
+    public Asker createAsker(String username, String password, Date birthOn, @Nullable Integer validatorId) throws SQLException {
+        PreparedStatement userInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO users(username, password) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+        userInsertStatement.setString(1, username);
+        userInsertStatement.setString(2, password);
+
+        userInsertStatement.execute();
+
+        ResultSet result = userInsertStatement.getGeneratedKeys();
+
+        if (!result.next()) return null;
+
+        int id = result.getInt(1);
+
+        PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO askers(user_id, birth_on, validator_id) VALUES (?,?,?)");
+
+        askerInsertStatement.setInt(1, id);
+        askerInsertStatement.setDate(2, birthOn);
+        if (validatorId == null) {
+            askerInsertStatement.setNull(3, Types.INTEGER);
+        } else {
+            askerInsertStatement.setInt(3, validatorId);
+        }
+
+
+        askerInsertStatement.execute();
+
+        return new Asker(
+                id,
+                username,
+                password,
+                birthOn
         );
     }
 
