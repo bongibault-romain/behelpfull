@@ -44,6 +44,23 @@ public class UserManager {
         return result;
     }
 
+    private Integer createUser(String username, String password) throws SQLException {
+        PreparedStatement userInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO users(username, password) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+        userInsertStatement.setString(1, username);
+        userInsertStatement.setString(2, password);
+
+        userInsertStatement.execute();
+
+        ResultSet result = userInsertStatement.getGeneratedKeys();
+
+        if (!result.next()) return null;
+
+        return result.getInt(1);
+    }
+
     @Nullable
     public Asker getAsker(int id) throws SQLException {
         //Prepare une requete SQL pour la BDD à laquelle nous sommes connectés
@@ -93,6 +110,34 @@ public class UserManager {
         );
     }
 
+    public Asker createAsker(String username, String password, Date birthOn, @Nullable Integer validatorId) throws SQLException {
+        Integer id = this.createUser(username, password);
+        if (id == null) return null;
+
+        PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO askers(user_id, birth_on, validator_id) VALUES (?,?,?)");
+
+        askerInsertStatement.setInt(1, id);
+        askerInsertStatement.setDate(2, birthOn);
+        if (validatorId == null) {
+            askerInsertStatement.setNull(3, Types.INTEGER);
+        } else {
+            askerInsertStatement.setInt(3, validatorId);
+        }
+
+
+        askerInsertStatement.execute();
+
+        return new Asker(
+                id,
+                username,
+                password,
+                birthOn,
+                validatorId
+        );
+    }
+
     @Nullable
     public Volunteer getVolunteer(int id) throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector()
@@ -114,6 +159,32 @@ public class UserManager {
                 result.getDate("birth_on"),
                 result.getBoolean("has_driving_license"),
                 result.getBoolean("has_psc1")
+        );
+    }
+
+    @Nullable
+    public Volunteer createVolunteer(String username, String password, Date birthOn, boolean hasDrivingLicense, boolean hasPSC1) throws SQLException {
+        Integer id = this.createUser(username, password);
+        if (id == null) return null;
+
+        PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO volunteer(user_id, has_driving_license, birth_on, has_psc1) VALUES (?,?,?,?)");
+
+        askerInsertStatement.setInt(1, id);
+        askerInsertStatement.setBoolean(2, hasDrivingLicense);
+        askerInsertStatement.setDate(3, birthOn);
+        askerInsertStatement.setBoolean(4, hasPSC1);
+
+        askerInsertStatement.execute();
+
+        return new Volunteer(
+                id,
+                username,
+                password,
+                birthOn,
+                hasDrivingLicense,
+                hasPSC1
         );
     }
 
@@ -180,6 +251,26 @@ public class UserManager {
                 result.getInt("id"),
                 result.getString("username"),
                 result.getString("password")
+        );
+    }
+
+    @Nullable
+    public Validator createValidator(String username, String password) throws SQLException {
+        Integer id = this.createUser(username, password);
+        if (id == null) return null;
+
+        PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("INSERT INTO volunteer(user_id) VALUES (?)");
+
+        askerInsertStatement.setInt(1, id);
+
+        askerInsertStatement.execute();
+
+        return new Validator(
+                id,
+                username,
+                password
         );
     }
 
