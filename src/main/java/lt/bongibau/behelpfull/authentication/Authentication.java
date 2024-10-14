@@ -3,9 +3,8 @@ package lt.bongibau.behelpfull.authentication;
 import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
 import lt.bongibau.behelpfull.exceptions.CreateAskerErrorException;
 import lt.bongibau.behelpfull.exceptions.UserExistsException;
-import lt.bongibau.behelpfull.models.Asker;
-import lt.bongibau.behelpfull.models.User;
-import lt.bongibau.behelpfull.users.UserManager;
+import lt.bongibau.behelpfull.users.Asker;
+import lt.bongibau.behelpfull.users.User;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Date;
@@ -16,7 +15,7 @@ public class Authentication {
     public User login(String username, String password) throws AuthenticationFailedException {
         User user = null;
         try {
-            user = UserManager.getInstance().getUser(username);
+            user = User.getByUsername(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -32,11 +31,11 @@ public class Authentication {
         User user = null;
         Asker asker = null;
         try {
-            user = UserManager.getInstance().getUser(username);
+            user = User.getByUsername(username);
             if (user != null) {
                 throw (new UserExistsException("Already existing user"));
             }
-            asker = UserManager.getInstance().createAsker(username, password, date, validatorId);
+            asker = Asker.create(username, password, date, validatorId);
             if (asker == null) {
                 throw (new CreateAskerErrorException("Create Asker Error"));
             }
