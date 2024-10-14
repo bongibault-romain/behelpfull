@@ -1,7 +1,6 @@
 package lt.bongibau.behelpfull.authentication;
 
 import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
-import lt.bongibau.behelpfull.exceptions.CreateAskerErrorException;
 import lt.bongibau.behelpfull.exceptions.UserExistsException;
 import lt.bongibau.behelpfull.users.Asker;
 import lt.bongibau.behelpfull.users.User;
@@ -37,9 +36,9 @@ public class Authentication {
             }
             asker = Asker.create(username, password, date, validatorId);
             if (asker == null) {
-                throw (new CreateAskerErrorException("Create Asker Error"));
+                throw (new CreateUserErrorException("Create Asker Error"));
             }
-        } catch (SQLException | UserExistsException | CreateAskerErrorException e) {
+        } catch (SQLException | UserExistsException | CreateUserErrorException e) {
             throw new RuntimeException(e);
         }
 
