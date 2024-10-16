@@ -129,4 +129,22 @@ public class Asker extends User {
                 result.getInt("validator_id")
         );
     }
+
+    @Override
+    public void save() throws SQLException {
+        super.save();
+
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("UPDATE askers SET birth_on = ?, validator_id = ? WHERE user_id = ?");
+
+        statement.setDate(1, Date.valueOf(birthOn));
+        if (validatorId == null) {
+            statement.setNull(2, Types.INTEGER);
+        } else {
+            statement.setInt(2, validatorId);
+        }
+        statement.setInt(3, this.getId());
+
+        statement.execute();
+    }
 }

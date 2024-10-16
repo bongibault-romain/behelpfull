@@ -104,4 +104,19 @@ public class Volunteer extends User {
                 result.getBoolean("has_psc1")
         );
     }
+
+    @Override
+    public void save() throws SQLException {
+        super.save();
+
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("UPDATE volunteers SET has_driving_license = ?, birth_on = ?, has_psc1 = ? WHERE user_id = ?");
+
+        statement.setBoolean(1, this.hasDriverLicense);
+        statement.setDate(2, Date.valueOf(this.dateDeNaissance));
+        statement.setBoolean(3, this.hasPSC1);
+        statement.setInt(4, this.getId());
+
+        statement.execute();
+    }
 }
