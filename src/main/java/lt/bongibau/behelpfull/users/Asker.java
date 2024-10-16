@@ -2,7 +2,6 @@ package lt.bongibau.behelpfull.users;
 
 import lt.bongibau.behelpfull.database.DatabaseManager;
 import lt.bongibau.behelpfull.requests.Request;
-import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -128,7 +127,12 @@ public class Asker extends User {
         );
     }
 
-    public Request createRequest(int id, String title, String description, Integer validatorId, Integer volunteerId, Status status, Date createdAt, int duration, String feedback, Date date) {
-        Request request = Request.createRequest(id, title, description, validatorId, this.getId(), volunteerId, status, createdAt, duration, feedback, date);
+    public Request createRequest(String title, String description, Integer validatorId, int duration, Date date) {
+        try {
+            Request request = Request.createRequest(title, description, this.getId(), validatorId, date, duration);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
