@@ -9,21 +9,25 @@ import java.time.Period;
 
 public class Asker extends User {
 
-    private LocalDate dateDeNaissance;
+    private LocalDate birthOn;
 
     @Nullable
     private Integer validatorId;
 
-    public Asker(int id, String username, String password, Date date, @Nullable Integer validatorId) {
+    public Asker(int id, String username, String password, Date birthOn, @Nullable Integer validatorId) {
         super(id, username, password);
-        this.dateDeNaissance = date.toLocalDate();
+        this.birthOn = birthOn.toLocalDate();
         this.validatorId = validatorId;
+    }
+
+    public LocalDate getBirthOn() {
+        return birthOn;
     }
 
     public int getAge() {
         LocalDate today = LocalDate.now();
-        if ((dateDeNaissance != null) && (dateDeNaissance.isBefore(today))) {
-            return Period.between(dateDeNaissance, today).getYears();
+        if ((birthOn != null) && (birthOn.isBefore(today))) {
+            return Period.between(birthOn, today).getYears();
         } else {
             return 0; // si la date de naissance est incorrecte
         }

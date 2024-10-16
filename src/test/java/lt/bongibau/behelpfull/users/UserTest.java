@@ -17,7 +17,13 @@ public abstract class UserTest {
     public static String TEST_PASSWORD = "password";
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("DELETE FROM users WHERE username = ?");
+
+        statement.setString(1, TEST_USERNAME);
+
+        statement.execute();
     }
 
     @AfterEach
@@ -42,32 +48,10 @@ public abstract class UserTest {
     }
 
     @Test
-    public void getById() throws SQLException {
-        Integer userId = User.createAndGetId(TEST_USERNAME, TEST_PASSWORD);
-
-        assertNotNull(userId);
-
-        User user = User.getById(userId);
-
-        assertNotNull(user);
-        assertEquals(userId, user.getId());
-        assertEquals(TEST_USERNAME, user.getUsername());
-        assertEquals(TEST_PASSWORD, user.getPassword());
-    }
+    public abstract void getById() throws SQLException;
 
     @Test
-    public void getByUsername() throws SQLException {
-        Integer userId = User.createAndGetId(TEST_USERNAME, TEST_PASSWORD);
-
-        assertNotNull(userId);
-
-        User user = User.getByUsername(TEST_USERNAME);
-
-        assertNotNull(user);
-        assertEquals(userId, user.getId());
-        assertEquals(TEST_USERNAME, user.getUsername());
-        assertEquals(TEST_PASSWORD, user.getPassword());
-    }
+    public abstract void getByUsername() throws SQLException;
 
     @Test
     public void testGetters() {

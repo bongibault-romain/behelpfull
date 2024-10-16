@@ -66,6 +66,8 @@ public class User {
 
         if (!result.next()) return null;
 
+        System.out.println(result.getInt(1));
+
         return result.getInt(1);
     }
 
