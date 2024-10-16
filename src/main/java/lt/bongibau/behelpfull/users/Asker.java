@@ -1,6 +1,8 @@
 package lt.bongibau.behelpfull.users;
 
 import lt.bongibau.behelpfull.database.DatabaseManager;
+import lt.bongibau.behelpfull.requests.Request;
+import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -124,5 +126,9 @@ public class Asker extends User {
                 result.getDate("birth_on"),
                 result.getInt("validator_id")
         );
+    }
+
+    public Request createRequest(int id, String title, String description, Integer validatorId, Integer volunteerId, Status status, Date createdAt, int duration, String feedback, Date date) {
+        Request request = Request.createRequest(id, title, description, validatorId, this.getId(), volunteerId, status, createdAt, duration, feedback, date);
     }
 }
