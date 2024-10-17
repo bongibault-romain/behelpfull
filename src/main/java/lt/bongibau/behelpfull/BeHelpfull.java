@@ -1,14 +1,16 @@
 package lt.bongibau.behelpfull;
 
-import lt.bongibau.behelpfull.users.Asker;
+import lt.bongibau.behelpfull.ui.LoginWindow;
 
-import java.sql.Date;
+import javax.swing.*;
 import java.sql.SQLException;
 
 public class BeHelpfull {
     public static void main(String[] args) throws SQLException {
-        System.out.println("Hello, BeHelpfull!");
+        SwingUtilities.invokeLater(() -> {
+            LoginWindow loginWindow = new LoginWindow();
 
-        Asker.create("bat", "mmll", new Date(1), null);
+            loginWindow.show();
+        });
     }
 }

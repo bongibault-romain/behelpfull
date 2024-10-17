@@ -66,6 +66,8 @@ public class User {
 
         if (!result.next()) return null;
 
+        System.out.println(result.getInt(1));
+
         return result.getInt(1);
     }
 
@@ -97,5 +99,16 @@ public class User {
         }
 
         return result;
+    }
+
+    public void save() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("UPDATE users SET username = ?, password = ? WHERE id = ?");
+
+        statement.setString(1, this.username);
+        statement.setString(2, this.password);
+        statement.setInt(3, this.id);
+
+        statement.execute();
     }
 }

@@ -10,21 +10,25 @@ import java.time.Period;
 
 public class Asker extends User {
 
-    private LocalDate dateDeNaissance;
+    private LocalDate birthOn;
 
     @Nullable
     private Integer validatorId;
 
     public Asker(int id, String username, String password, Date date, @Nullable Integer validatorId) {
         super(id, username, password);
-        this.dateDeNaissance = date.toLocalDate();
+        this.birthOn = date.toLocalDate();
         this.validatorId = validatorId;
+    }
+
+    public LocalDate getBirthOn() {
+        return birthOn;
     }
 
     public int getAge() {
         LocalDate today = LocalDate.now();
-        if ((dateDeNaissance != null) && (dateDeNaissance.isBefore(today))) {
-            return Period.between(dateDeNaissance, today).getYears();
+        if ((birthOn != null) && (birthOn.isBefore(today))) {
+            return Period.between(birthOn, today).getYears();
         } else {
             return 0; // si la date de naissance est incorrecte
         }
@@ -130,9 +134,27 @@ public class Asker extends User {
     public Request createRequest(String title, String description, Integer validatorId, int duration, Date date) {
         try {
             Request request = Request.createRequest(title, description, this.getId(), validatorId, date, duration);
+            return request;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @Override
+    public void save() throws SQLException {
+        super.save();
+
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("UPDATE askers SET birth_on = ?, validator_id = ? WHERE user_id = ?");
+
+        statement.setDate(1, Date.valueOf(birthOn));
+        if (validatorId == null) {
+            statement.setNull(2, Types.INTEGER);
+        } else {
+            statement.setInt(2, validatorId);
+        }
+        statement.setInt(3, this.getId());
+
+        statement.execute();
     }
 }
