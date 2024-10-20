@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="projet_gei_027@srv-bdens.insa-toulouse.fr">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.51">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.53">
     <root id="1">
       <DefaultCasing>exact</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
@@ -758,17 +758,17 @@ projet_gei_027|schema||projet_gei_027||UPDATE|G</Grants>
       <CollationName>latin1_swedish_ci</CollationName>
     </table>
     <column id="231" parent="227" name="user_id">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="232" parent="227" name="birth_on">
-      <DasType>date|0s</DasType>
       <Position>2</Position>
+      <StoredType>date|0s</StoredType>
     </column>
     <column id="233" parent="227" name="validator_id">
-      <DasType>int(11)|0s</DasType>
       <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="234" parent="227" name="FK__users__askers">
       <ColNames>user_id</ColNames>
@@ -798,19 +798,19 @@ projet_gei_027|schema||projet_gei_027||UPDATE|G</Grants>
     </key>
     <column id="239" parent="228" name="id">
       <AutoIncrement>18</AutoIncrement>
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="240" parent="228" name="username">
-      <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>varchar(32)|0s</StoredType>
     </column>
     <column id="241" parent="228" name="password">
-      <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>text|0s</StoredType>
     </column>
     <index id="242" parent="228" name="PRIMARY">
       <ColNames>id</ColNames>
@@ -831,9 +831,9 @@ projet_gei_027|schema||projet_gei_027||UPDATE|G</Grants>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
     <column id="246" parent="229" name="user_id">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <foreign-key id="247" parent="229" name="FK__users__validators">
       <ColNames>user_id</ColNames>
@@ -851,25 +851,25 @@ projet_gei_027|schema||projet_gei_027||UPDATE|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="250" parent="230" name="user_id">
-      <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
     <column id="251" parent="230" name="has_driving_license">
-      <DasType>tinyint(4)|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>tinyint(4)|0s</StoredType>
     </column>
     <column id="252" parent="230" name="birth_on">
-      <DasType>date|0s</DasType>
       <Position>3</Position>
+      <StoredType>date|0s</StoredType>
     </column>
     <column id="253" parent="230" name="has_psc1">
-      <DasType>tinyint(4)|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>tinyint(4)|0s</StoredType>
     </column>
     <foreign-key id="254" parent="230" name="FK__users__volunteers">
       <ColNames>user_id</ColNames>

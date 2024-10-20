@@ -78,6 +78,14 @@ public class Request {
         );
     }
 
+    public void deleteRequest() throws SQLException {
+        PreparedStatement deleteRequestStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("DELETE FROM requests WHERE id = (?)") ;
+
+        deleteRequestStatement.setInt(1, this.getId()) ;
+        deleteRequestStatement.execute();
+    }
 
     public int getId() {
         return id;
@@ -163,7 +171,13 @@ public class Request {
         return feedback;
     }
 
-    public void setFeedback(String feedback) {
+    public void setFeedback(String feedback) throws SQLException {
         this.feedback = feedback;
+        PreparedStatement deleteRequestStatement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("UPDATE requests SET feedback = ? WHERE id = ? ");
+        deleteRequestStatement.setString(1, feedback);
+        deleteRequestStatement.setInt(2, this.getId());
+        deleteRequestStatement.execute();
     }
 }

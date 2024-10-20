@@ -140,6 +140,23 @@ public class Asker extends User {
         }
     }
 
+    public void deleteRequest(Request request) {
+        try {
+            request.deleteRequest();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void giveFeedback(Request request, String feedback) {
+        try {
+            request.setFeedback(feedback);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void save() throws SQLException {
         super.save();
