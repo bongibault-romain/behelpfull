@@ -2,11 +2,15 @@ package lt.bongibau.behelpfull.users;
 
 import lt.bongibau.behelpfull.database.DatabaseManager;
 import lt.bongibau.behelpfull.requests.Request;
+import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Asker extends User {
 
@@ -149,6 +153,28 @@ public class Asker extends User {
         }
     }
 
+    public ArrayList<String> getFeedbacksOf(Volunteer volunteer) throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("SELECT * FROM requests WHERE volunteer_id = ?");
+
+        statement.setInt(1, volunteer.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        if (!result.next()) {
+            return null;
+        }
+
+        ArrayList<String> feedbacksOf = new ArrayList<>();
+
+        while (result.next()) {
+            feedbacksOf.add(result.getString("feedback"));
+        }
+
+        return feedbacksOf;
+    }
+
     public void giveFeedback(Request request, String feedback) {
         try {
             request.setFeedback(feedback);
@@ -173,5 +199,31 @@ public class Asker extends User {
         statement.setInt(3, this.getId());
 
         statement.execute();
+    }
+
+    public HashMap<Integer,String> getStatusOfMyRequests() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("SELECT * FROM requests WHERE asker_id = ?");
+
+        statement.setInt(1, this.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        if (!result.next()) {
+            return null;
+        }
+
+        HashMap<Integer, String> StatusOfMyRequests = new HashMap();
+        int requestId;
+        String status;
+
+        while (result.next()) {
+            requestId = result.getInt("request_id");
+            status = result.getString("status");
+            StatusOfMyRequests.put(requestId, status);
+        }
+
+        return StatusOfMyRequests;
     }
 }

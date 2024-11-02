@@ -177,7 +177,7 @@ public class Request {
                 .getConnection()
                 .prepareStatement("UPDATE requests SET feedback = ? WHERE id = ? ");
         deleteRequestStatement.setString(1, feedback);
-        deleteRequestStatement.setInt(2, this.getId());
+        deleteRequestStatement.setInt(2, this.id);
         deleteRequestStatement.execute();
     }
 }

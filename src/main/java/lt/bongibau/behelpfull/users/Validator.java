@@ -1,16 +1,24 @@
 package lt.bongibau.behelpfull.users;
 
 import lt.bongibau.behelpfull.database.DatabaseManager;
+import lt.bongibau.behelpfull.requests.Request;
+import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Validator extends User {
 
+    private static HashMap<Integer, Validator> instances = new HashMap<>();
+
     public Validator(int id, String username, String password) {
         super(id, username, password);
+        instances.put(id, this);
     }
 
     @Nullable
@@ -74,5 +82,10 @@ public class Validator extends User {
                 result.getString("password")
         );
     }
+
+    public static HashMap<Integer, Validator> getAll() throws SQLException {
+        return instances;
+    }
+
 
 }

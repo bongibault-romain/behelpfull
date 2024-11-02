@@ -1,6 +1,8 @@
 package lt.bongibau.behelpfull.users;
 
 import lt.bongibau.behelpfull.database.DatabaseManager;
+import lt.bongibau.behelpfull.requests.Request;
+import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Date;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class Volunteer extends User {
     private boolean hasDriverLicense;
@@ -38,12 +41,13 @@ public class Volunteer extends User {
 
         PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
-                .prepareStatement("INSERT INTO volunteers(user_id, has_driving_license, birth_on, has_psc1) VALUES (?,?,?,?)");
+                .prepareStatement("INSERT INTO volunteers(user_id, has_driving_license, birth_on, has_psc1, feedback) VALUES (?,?,?,?,?)");
 
         askerInsertStatement.setInt(1, id);
         askerInsertStatement.setBoolean(2, hasDrivingLicense);
         askerInsertStatement.setDate(3, birthOn);
         askerInsertStatement.setBoolean(4, hasPSC1);
+        askerInsertStatement.setString(5, feedback);
 
         askerInsertStatement.execute();
 
@@ -119,4 +123,31 @@ public class Volunteer extends User {
 
         statement.execute();
     }
+
+
+    public boolean HasDriverLicense() {
+        return hasDriverLicense;
+    }
+
+    public void setHasDriverLicense(boolean hasDriverLicense) {
+        this.hasDriverLicense = hasDriverLicense;
+    }
+
+    public boolean HasPSC1() {
+        return hasPSC1;
+    }
+
+    public void setHasPSC1(boolean hasPSC1) {
+        this.hasPSC1 = hasPSC1;
+    }
+
+    public LocalDate getDateDeNaissance() {
+        return dateDeNaissance;
+    }
+
+    public void setDateDeNaissance(LocalDate dateDeNaissance) {
+        this.dateDeNaissance = dateDeNaissance;
+    }
+
+
 }
