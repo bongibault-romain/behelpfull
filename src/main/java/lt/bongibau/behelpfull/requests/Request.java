@@ -81,9 +81,9 @@ public class Request {
     public void deleteRequest() throws SQLException {
         PreparedStatement deleteRequestStatement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
-                .prepareStatement("DELETE FROM requests WHERE id = (?)") ;
+                .prepareStatement("DELETE FROM requests WHERE id = (?)");
 
-        deleteRequestStatement.setInt(1, this.getId()) ;
+        deleteRequestStatement.setInt(1, this.getId());
         deleteRequestStatement.execute();
     }
 
@@ -107,11 +107,11 @@ public class Request {
         return askerId;
     }
 
-    public Integer getVolunteerId() {
+    public @Nullable Integer getVolunteerId() {
         return volunteerId;
     }
 
-    public Integer getValidatorId() {
+    public @Nullable Integer getValidatorId() {
         return validatorId;
     }
 
@@ -159,11 +159,11 @@ public class Request {
         this.askerId = askerId;
     }
 
-    public void setVolunteerId(Integer volunteerId) {
+    public void setVolunteerId(@Nullable Integer volunteerId) {
         this.volunteerId = volunteerId;
     }
 
-    public void setValidatorId(Integer validatorId) {
+    public void setValidatorId(@Nullable Integer validatorId) {
         this.validatorId = validatorId;
     }
 
@@ -173,11 +173,41 @@ public class Request {
 
     public void setFeedback(String feedback) throws SQLException {
         this.feedback = feedback;
-        PreparedStatement deleteRequestStatement = DatabaseManager.getInstance().getConnector()
-                .getConnection()
-                .prepareStatement("UPDATE requests SET feedback = ? WHERE id = ? ");
-        deleteRequestStatement.setString(1, feedback);
-        deleteRequestStatement.setInt(2, this.id);
-        deleteRequestStatement.execute();
+    }
+
+    public void save() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("UPDATE requests SET title = ?, description = ?, validator_id = ?, asker_id = ?, volunteer_id = ?, status = ?, created_at = ?, duration = ?, feedback = ?, date = ?");
+
+        statement.setString(1, this.title);
+        statement.setString(2, this.description);
+
+        if (this.validatorId == null) {
+            statement.setNull(3, Types.INTEGER);
+        } else {
+            statement.setInt(3, this.validatorId);
+        }
+
+        statement.setInt(4, this.askerId);
+
+        if (this.volunteerId == null) {
+            statement.setNull(5, Types.INTEGER);
+        } else {
+            statement.setInt(5, this.volunteerId);
+        }
+
+        statement.setString(6, this.status.toString());
+        statement.setDate(7, this.createdAt);
+        statement.setInt(8, this.duration);
+
+        if (this.feedback == null) {
+            statement.setNull(9, Types.VARCHAR);
+        } else {
+            statement.setString(9, this.feedback);
+        }
+
+        statement.setDate(10, this.date);
+
+        statement.execute();
     }
 }
