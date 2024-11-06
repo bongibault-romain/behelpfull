@@ -153,28 +153,6 @@ public class Asker extends User {
         }
     }
 
-    public ArrayList<String> getFeedbacksOf(Volunteer volunteer) throws SQLException {
-        PreparedStatement statement = DatabaseManager.getInstance().getConnector()
-                .getConnection()
-                .prepareStatement("SELECT * FROM requests WHERE volunteer_id = ?");
-
-        statement.setInt(1, volunteer.getId());
-
-        ResultSet result = statement.executeQuery();
-
-        if (!result.next()) {
-            return null;
-        }
-
-        ArrayList<String> feedbacksOf = new ArrayList<>();
-
-        while (result.next()) {
-            feedbacksOf.add(result.getString("feedback"));
-        }
-
-        return feedbacksOf;
-    }
-
     public void giveFeedback(Request request, String feedback) {
         try {
             request.setFeedback(feedback);
