@@ -65,9 +65,7 @@ public class User {
         ResultSet result = userInsertStatement.getGeneratedKeys();
 
         if (!result.next()) return null;
-
-        System.out.println(result.getInt(1));
-
+        
         return result.getInt(1);
     }
 
