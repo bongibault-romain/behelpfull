@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Volunteer extends User {
@@ -41,13 +42,12 @@ public class Volunteer extends User {
 
         PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
-                .prepareStatement("INSERT INTO volunteers(user_id, has_driving_license, birth_on, has_psc1, feedback) VALUES (?,?,?,?,?)");
+                .prepareStatement("INSERT INTO volunteers(user_id, has_driving_license, birth_on, has_psc1) VALUES (?,?,?,?)");
 
         askerInsertStatement.setInt(1, id);
         askerInsertStatement.setBoolean(2, hasDrivingLicense);
         askerInsertStatement.setDate(3, birthOn);
         askerInsertStatement.setBoolean(4, hasPSC1);
-        askerInsertStatement.setString(5, feedback);
 
         askerInsertStatement.execute();
 
@@ -150,4 +150,53 @@ public class Volunteer extends User {
     }
 
 
+    public List<Request> getRequests() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("SELECT * FROM requests WHERE volunteer_id = ?");
+
+        statement.setInt(1, this.getId());
+
+        ResultSet result = statement.executeQuery();
+        List<Request> requests = new ArrayList<>();
+
+        while (result.next()) {
+            int id = result.getInt("id");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            Integer validatorId = result.getInt("validator_id");
+
+            if (result.wasNull()) validatorId = null;
+
+            int askerId = result.getInt("asker_id");
+            Integer volunteerId = result.getInt("volunteer_id");
+
+            if (result.wasNull()) volunteerId = null;
+
+            Status status = Status.valueOf(result.getString("status"));
+            Date createdAt = result.getDate("created_at");
+            int duration = result.getInt("duration");
+            String feedback = result.getString("feedback");
+
+            if (result.wasNull()) feedback = null;
+
+            Date date = result.getDate("date");
+
+            requests.add(new Request(
+                    id,
+                    title,
+                    description,
+                    validatorId,
+                    askerId,
+                    volunteerId,
+                    status,
+                    createdAt,
+                    duration,
+                    feedback,
+                    date
+            ));
+        }
+
+        return requests;
+    }
 }
