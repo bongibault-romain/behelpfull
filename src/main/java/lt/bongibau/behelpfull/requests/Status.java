@@ -2,7 +2,8 @@ package lt.bongibau.behelpfull.requests;
 
 public enum Status {
 
-    IN_WAITING,
+    PUBLISHED,
+    WAITING_FOR_APPROVAL,
     ASSIGNED,
     DONE
 }

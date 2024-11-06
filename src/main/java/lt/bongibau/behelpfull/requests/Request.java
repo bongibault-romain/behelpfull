@@ -53,7 +53,12 @@ public class Request {
             requestInsertStatement.setInt(3, validatorId);
         }
         requestInsertStatement.setInt(4, askerId);
-        requestInsertStatement.setString(5, Status.IN_WAITING.toString());
+        if (validatorId==null) {
+            requestInsertStatement.setString(5, Status.PUBLISHED.toString());
+        }
+        else {
+            requestInsertStatement.setString(5, Status.WAITING_FOR_APPROVAL.toString());
+        }
         requestInsertStatement.setInt(6, duration);
         requestInsertStatement.setDate(7, date);
 
@@ -159,11 +164,11 @@ public class Request {
         this.askerId = askerId;
     }
 
-    public void setVolunteerId(@Nullable Integer volunteerId) {
+    public void setVolunteerId(Integer volunteerId) {
         this.volunteerId = volunteerId;
     }
 
-    public void setValidatorId(@Nullable Integer validatorId) {
+    public void setValidatorId(Integer validatorId) {
         this.validatorId = validatorId;
     }
 

@@ -9,6 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Asker extends User {
@@ -146,12 +147,12 @@ public class Asker extends User {
     public void deleteRequest(Request request) {
         try {
             request.deleteRequest();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // TODO: bouger dans la classe Volunteer
     public ArrayList<String> getFeedbacksOf(Volunteer volunteer) throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
@@ -160,6 +161,10 @@ public class Asker extends User {
         statement.setInt(1, volunteer.getId());
 
         ResultSet result = statement.executeQuery();
+
+        if (!result.next()) {
+            return null;
+        }
 
         ArrayList<String> feedbacksOf = new ArrayList<>();
 
@@ -246,5 +251,5 @@ public class Asker extends User {
         return requests;
 
     }
-    
+
 }

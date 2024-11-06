@@ -87,5 +87,9 @@ public class Validator extends User {
         return instances;
     }
 
+    public void validateRequest(Request request) throws SQLException {
+        request.setStatus(Status.PUBLISHED);
+    }
+
 
 }
