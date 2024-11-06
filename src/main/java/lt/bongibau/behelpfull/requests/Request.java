@@ -53,10 +53,9 @@ public class Request {
             requestInsertStatement.setInt(3, validatorId);
         }
         requestInsertStatement.setInt(4, askerId);
-        if (validatorId==null) {
+        if (validatorId == null) {
             requestInsertStatement.setString(5, Status.PUBLISHED.toString());
-        }
-        else {
+        } else {
             requestInsertStatement.setString(5, Status.WAITING_FOR_APPROVAL.toString());
         }
         requestInsertStatement.setInt(6, duration);
@@ -75,7 +74,7 @@ public class Request {
                 validatorId,
                 askerId,
                 result.getInt(6),
-                Status.IN_WAITING,
+                validatorId == null ? Status.PUBLISHED : Status.WAITING_FOR_APPROVAL,
                 result.getDate(8),
                 duration,
                 null,
