@@ -9,7 +9,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Asker extends User {
@@ -147,12 +146,12 @@ public class Asker extends User {
     public void deleteRequest(Request request) {
         try {
             request.deleteRequest();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // TODO: bouger dans la classe Volunteer
     public ArrayList<String> getFeedbacksOf(Volunteer volunteer) throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
@@ -161,10 +160,6 @@ public class Asker extends User {
         statement.setInt(1, volunteer.getId());
 
         ResultSet result = statement.executeQuery();
-
-        if (!result.next()) {
-            return null;
-        }
 
         ArrayList<String> feedbacksOf = new ArrayList<>();
 
@@ -201,7 +196,7 @@ public class Asker extends User {
         statement.execute();
     }
 
-    public HashMap<Integer,String> getStatusOfMyRequests() throws SQLException {
+    public List<Request> getRequests() throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
                 .prepareStatement("SELECT * FROM requests WHERE asker_id = ?");
@@ -209,21 +204,46 @@ public class Asker extends User {
         statement.setInt(1, this.getId());
 
         ResultSet result = statement.executeQuery();
-
-        if (!result.next()) {
-            return null;
-        }
-
-        HashMap<Integer, String> StatusOfMyRequests = new HashMap();
-        int requestId;
-        String status;
+        List<Request> requests = new ArrayList<>();
 
         while (result.next()) {
-            requestId = result.getInt("request_id");
-            status = result.getString("status");
-            StatusOfMyRequests.put(requestId, status);
+            int id = result.getInt("id");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            Integer validatorId = result.getInt("validator_id");
+
+            if (result.wasNull()) validatorId = null;
+
+            int askerId = result.getInt("asker_id");
+            Integer volunteerId = result.getInt("volunteer_id");
+
+            if (result.wasNull()) volunteerId = null;
+
+            Status status = Status.valueOf(result.getString("status"));
+            Date createdAt = result.getDate("created_at");
+            int duration = result.getInt("duration");
+            String feedback = result.getString("feedback");
+
+            if (result.wasNull()) feedback = null;
+
+            Date date = result.getDate("date");
+
+            requests.add(new Request(
+                    id,
+                    title,
+                    description,
+                    validatorId,
+                    askerId,
+                    volunteerId,
+                    status,
+                    createdAt,
+                    duration,
+                    feedback,
+                    date
+            ));
         }
 
-        return StatusOfMyRequests;
+        return requests;
+
     }
 }
