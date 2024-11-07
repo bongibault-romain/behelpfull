@@ -200,7 +200,7 @@ public class Volunteer extends User {
         return requests;
     }
 
-    public void acceptRequest(Request request){
+    public void acceptRequest(Request request) throws SQLException {
         request.setStatus(Status.ASSIGNED);
         request.save();
     }
