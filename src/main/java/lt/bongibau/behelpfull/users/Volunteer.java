@@ -201,7 +201,9 @@ public class Volunteer extends User {
     }
 
     public void acceptRequest(Request request) throws SQLException {
-        request.setStatus(Status.ASSIGNED);
+        if (request.getStatus()==Status.PUBLISHED) {
+            request.setStatus(Status.ASSIGNED);
+        }
         request.save();
     }
 
