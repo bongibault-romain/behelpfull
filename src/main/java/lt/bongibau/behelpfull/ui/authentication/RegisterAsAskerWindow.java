@@ -2,11 +2,15 @@ package lt.bongibau.behelpfull.ui.authentication;
 
 import lt.bongibau.behelpfull.authentication.Authentication;
 import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
+import lt.bongibau.behelpfull.exceptions.CreateUserErrorException;
+import lt.bongibau.behelpfull.exceptions.UserAlreadyExistsException;
 import lt.bongibau.behelpfull.ui.Window;
 import lt.bongibau.behelpfull.ui.WindowManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
+import java.sql.SQLException;
 
 public class RegisterAsAskerWindow implements Window {
 
@@ -26,6 +30,11 @@ public class RegisterAsAskerWindow implements Window {
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
 
+        JLabel birthOnLabel = new JLabel("Birth on:");
+        JSpinner dateSpinner = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy");
+        dateSpinner.setEditor(dateEditor);
+
         JLabel errorLabel = new JLabel("Invalid username or password");
         errorLabel.setForeground(Color.RED);
         errorLabel.setVisible(false);
@@ -36,12 +45,14 @@ public class RegisterAsAskerWindow implements Window {
             String username = usernameField.getText();
             String password = new String(passwordField
                     .getPassword());
+            Date birthOn = new java.sql.Date(((SpinnerDateModel) dateSpinner.getModel()).getDate().getTime());
 
             try {
-                Authentication.login(username, password);
+                Authentication.registerAsker(username, password, birthOn);
 
                 // TODO: un truc
-            } catch (AuthenticationFailedException ex) {
+            } catch (SQLException | UserAlreadyExistsException |
+                     CreateUserErrorException ex) {
                 errorLabel.setText(ex.getMessage());
                 errorLabel.setVisible(true);
             }
@@ -57,6 +68,8 @@ public class RegisterAsAskerWindow implements Window {
         panel.add(passwordLabel);
 
         panel.add(passwordField);
+        panel.add(birthOnLabel);
+        panel.add(dateSpinner);
         panel.add(errorLabel);
         panel.add(back);
         panel.add(loginButton);
