@@ -1,12 +1,14 @@
-package lt.bongibau.behelpfull.ui;
+package lt.bongibau.behelpfull.ui.authentication;
 
 import lt.bongibau.behelpfull.authentication.Authentication;
 import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
+import lt.bongibau.behelpfull.ui.Window;
+import lt.bongibau.behelpfull.ui.WindowManager;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginWindow {
+public class LoginWindow implements Window {
 
     private JFrame frame;
 
@@ -38,11 +40,16 @@ public class LoginWindow {
             try {
                 Authentication.login(username, password);
 
-                this.dispose();
+                // TODO: un truc
             } catch (AuthenticationFailedException ex) {
                 errorLabel.setText(ex.getMessage());
                 errorLabel.setVisible(true);
             }
+        });
+
+        JButton back = new JButton("Back");
+        back.addActionListener(e -> {
+            WindowManager.getInstance().setCurrentWindow(new ChooseAuthenticationMethodWindow());
         });
 
         panel.add(usernameLabel);
@@ -51,7 +58,9 @@ public class LoginWindow {
 
         panel.add(passwordField);
         panel.add(errorLabel);
+        panel.add(back);
         panel.add(loginButton);
+
 
         frame.add(panel);
     }
