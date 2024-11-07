@@ -183,7 +183,7 @@ public class Request {
 
     public void save() throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
-                .prepareStatement("UPDATE requests SET title = ?, description = ?, validator_id = ?, asker_id = ?, volunteer_id = ?, status = ?, created_at = ?, duration = ?, feedback = ?, date = ?");
+                .prepareStatement("UPDATE requests SET title = ?, description = ?, validator_id = ?, asker_id = ?, volunteer_id = ?, status = ?, created_at = ?, duration = ?, feedback = ?, date = ? WHERE id = ?");
 
         statement.setString(1, this.title);
         statement.setString(2, this.description);
@@ -213,6 +213,7 @@ public class Request {
         }
 
         statement.setDate(10, this.date);
+        statement.setInt(11, this.id);
 
         statement.execute();
     }
