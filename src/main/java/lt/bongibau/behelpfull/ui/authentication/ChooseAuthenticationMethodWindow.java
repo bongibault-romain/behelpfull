@@ -26,10 +26,18 @@ public class ChooseAuthenticationMethodWindow implements Window {
 
         JButton registerButton = new JButton("Register as Asker");
         JButton registerValidatorButton = new JButton("Register as Validator");
+
+        registerValidatorButton.addActionListener(e -> {
+            WindowManager.getInstance().setCurrentWindow(new RegisterAsValidatorWindow());
+        });
+
         JButton regiserVolunteerButton = new JButton("Register as Volunteer");
 
-        panel.add(loginButton);
+        regiserVolunteerButton.addActionListener(e -> {
+            WindowManager.getInstance().setCurrentWindow(new RegisterAsVolunteerWindow());
+        });
 
+        panel.add(loginButton);
         panel.add(registerButton);
         panel.add(registerValidatorButton);
         panel.add(regiserVolunteerButton);
