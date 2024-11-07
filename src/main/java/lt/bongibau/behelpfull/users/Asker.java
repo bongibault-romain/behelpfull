@@ -5,7 +5,10 @@ import lt.bongibau.behelpfull.requests.Request;
 import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ public class Asker extends User {
 
     private LocalDate birthOn;
 
-    public Asker(int id, String username, String password, Date date, @Nullable Integer validatorId) {
+    public Asker(int id, String username, String password, Date date) {
         super(id, username, password);
         this.birthOn = date.toLocalDate();
     }
@@ -36,29 +39,23 @@ public class Asker extends User {
     /**
      * Create a new Asker in the database
      *
-     * @param username    username of the user
-     * @param password    password of the user
-     * @param birthOn     birthdate of the user
-     * @param validatorId id of the validator
+     * @param username username of the user
+     * @param password password of the user
+     * @param birthOn  birthdate of the user
      * @return the created Asker, or null if an error occurred
      * @throws SQLException if an error occurs while creating the Asker
      */
     @Nullable
-    public static Asker create(String username, String password, Date birthOn, @Nullable Integer validatorId) throws SQLException {
+    public static Asker create(String username, String password, Date birthOn) throws SQLException {
         Integer id = User.createAndGetId(username, password);
         if (id == null) return null;
 
         PreparedStatement askerInsertStatement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
-                .prepareStatement("INSERT INTO askers(user_id, birth_on, validator_id) VALUES (?,?,?)");
+                .prepareStatement("INSERT INTO askers(user_id, birth_on) VALUES (?,?)");
 
         askerInsertStatement.setInt(1, id);
         askerInsertStatement.setDate(2, birthOn);
-        if (validatorId == null) {
-            askerInsertStatement.setNull(3, Types.INTEGER);
-        } else {
-            askerInsertStatement.setInt(3, validatorId);
-        }
 
 
         askerInsertStatement.execute();
@@ -67,8 +64,7 @@ public class Asker extends User {
                 id,
                 username,
                 password,
-                birthOn,
-                validatorId
+                birthOn
         );
     }
 
@@ -93,8 +89,7 @@ public class Asker extends User {
                 result.getInt("id"),
                 result.getString("username"),
                 result.getString("password"),
-                result.getDate("birth_on"),
-                result.getInt("validator_id")
+                result.getDate("birth_on")
         );
     }
 
@@ -116,8 +111,7 @@ public class Asker extends User {
                 result.getInt("id"),
                 result.getString("username"),
                 result.getString("password"),
-                result.getDate("birth_on"),
-                result.getInt("validator_id")
+                result.getDate("birth_on")
         );
     }
 

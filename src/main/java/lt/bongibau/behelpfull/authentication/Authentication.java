@@ -7,7 +7,6 @@ import lt.bongibau.behelpfull.users.Asker;
 import lt.bongibau.behelpfull.users.User;
 import lt.bongibau.behelpfull.users.Validator;
 import lt.bongibau.behelpfull.users.Volunteer;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -29,24 +28,8 @@ public class Authentication {
         return user;
     }
 
-    public static Asker registerAsker(String username, String password, Date birthOn, @Nullable Integer validatorId) throws UserAlreadyExistsException, CreateUserErrorException, SQLException {
-        User user = User.getByUsername(username);
-
-        if (user != null) {
-            throw (new UserAlreadyExistsException("This username already exists"));
-        }
-
-        Asker asker = Asker.create(username, password, birthOn, validatorId);
-
-        if (asker == null) {
-            throw (new CreateUserErrorException("An error occurred while creating the user"));
-        }
-
-        return asker;
-    }
-
     public static Asker registerAsker(String username, String password, Date birthOn) throws SQLException, UserAlreadyExistsException, CreateUserErrorException {
-        return Authentication.registerAsker(username, password, birthOn, null);
+        return Authentication.registerAsker(username, password, birthOn);
     }
 
     public static Validator registerValidator(String username, String password) throws UserAlreadyExistsException, CreateUserErrorException, SQLException {
