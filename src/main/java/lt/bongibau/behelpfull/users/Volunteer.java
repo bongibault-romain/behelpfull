@@ -200,5 +200,10 @@ public class Volunteer extends User {
         return requests;
     }
 
+    public void acceptRequest(Request request){
+        request.setStatus(Status.ASSIGNED);
+        request.save();
+    }
+
     
 }
