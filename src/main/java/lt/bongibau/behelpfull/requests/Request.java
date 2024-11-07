@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Request {
 
@@ -213,5 +215,57 @@ public class Request {
         statement.setDate(10, this.date);
 
         statement.execute();
+    }
+
+    public List<Request> getAll(int page, int perPage) throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
+                .prepareStatement("SELECT * from requests order by created_at desc limit ? offset ?");
+
+        statement.setInt(1, perPage);
+        statement.setInt(2, page * perPage);
+        statement.execute();
+
+        ResultSet result = statement.getResultSet();
+
+        List<Request> requests = new ArrayList<>();
+
+        while (result.next()) {
+            int id = result.getInt("id");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            Integer validatorId = result.getInt("validator_id");
+
+            if (result.wasNull()) validatorId = null;
+
+            int askerId = result.getInt("asker_id");
+            Integer volunteerId = result.getInt("volunteer_id");
+
+            if (result.wasNull()) volunteerId = null;
+
+            Status status = Status.valueOf(result.getString("status"));
+            Date createdAt = result.getDate("created_at");
+            int duration = result.getInt("duration");
+            String feedback = result.getString("feedback");
+
+            if (result.wasNull()) feedback = null;
+
+            Date date = result.getDate("date");
+
+            requests.add(new Request(
+                    id,
+                    title,
+                    description,
+                    validatorId,
+                    askerId,
+                    volunteerId,
+                    status,
+                    createdAt,
+                    duration,
+                    feedback,
+                    date
+            ));
+        }
+
+        return requests;
     }
 }

@@ -90,5 +90,9 @@ public class Validator extends User {
         request.save();
     }
 
-
+    public void refuseRequest(Request request, String reason) throws SQLException {
+        request.setFeedback(reason);
+        request.setStatus(Status.BANNED_HAMMER);
+        request.save();
+    }
 }
