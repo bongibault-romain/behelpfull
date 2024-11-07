@@ -1,13 +1,18 @@
 package lt.bongibau.behelpfull.ui;
 
+import lt.bongibau.behelpfull.users.User;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class FeedWindow {
+public class FeedWindow implements Window {
+    private final User user;
+
     private JFrame frame;
 
-    public FeedWindow() {
-        frame = new JFrame("Login");
+    public FeedWindow(User user) {
+        this.user = user;
+        frame = new JFrame("Feed of " + user.getUsername());
         frame.setSize(300, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -28,5 +33,9 @@ public class FeedWindow {
 
     public void dispose() {
         frame.dispose();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

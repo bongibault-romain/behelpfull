@@ -2,8 +2,10 @@ package lt.bongibau.behelpfull.ui.authentication;
 
 import lt.bongibau.behelpfull.authentication.Authentication;
 import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
+import lt.bongibau.behelpfull.ui.FeedWindow;
 import lt.bongibau.behelpfull.ui.Window;
 import lt.bongibau.behelpfull.ui.WindowManager;
+import lt.bongibau.behelpfull.users.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,9 +40,9 @@ public class LoginWindow implements Window {
                     .getPassword());
 
             try {
-                Authentication.login(username, password);
+                User user = Authentication.login(username, password);
 
-                // TODO: un truc
+                WindowManager.getInstance().setCurrentWindow(new FeedWindow(user));
             } catch (AuthenticationFailedException ex) {
                 errorLabel.setText(ex.getMessage());
                 errorLabel.setVisible(true);

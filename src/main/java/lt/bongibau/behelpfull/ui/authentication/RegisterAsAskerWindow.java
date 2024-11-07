@@ -1,11 +1,12 @@
 package lt.bongibau.behelpfull.ui.authentication;
 
 import lt.bongibau.behelpfull.authentication.Authentication;
-import lt.bongibau.behelpfull.exceptions.AuthenticationFailedException;
 import lt.bongibau.behelpfull.exceptions.CreateUserErrorException;
 import lt.bongibau.behelpfull.exceptions.UserAlreadyExistsException;
+import lt.bongibau.behelpfull.ui.FeedWindow;
 import lt.bongibau.behelpfull.ui.Window;
 import lt.bongibau.behelpfull.ui.WindowManager;
+import lt.bongibau.behelpfull.users.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,9 +49,9 @@ public class RegisterAsAskerWindow implements Window {
             Date birthOn = new java.sql.Date(((SpinnerDateModel) dateSpinner.getModel()).getDate().getTime());
 
             try {
-                Authentication.registerAsker(username, password, birthOn);
+                User user = Authentication.registerAsker(username, password, birthOn);
 
-                // TODO: un truc
+                WindowManager.getInstance().setCurrentWindow(new FeedWindow(user));
             } catch (SQLException | UserAlreadyExistsException |
                      CreateUserErrorException ex) {
                 errorLabel.setText(ex.getMessage());

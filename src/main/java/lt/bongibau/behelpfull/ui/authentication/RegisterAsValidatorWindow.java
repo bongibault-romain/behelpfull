@@ -3,8 +3,10 @@ package lt.bongibau.behelpfull.ui.authentication;
 import lt.bongibau.behelpfull.authentication.Authentication;
 import lt.bongibau.behelpfull.exceptions.CreateUserErrorException;
 import lt.bongibau.behelpfull.exceptions.UserAlreadyExistsException;
+import lt.bongibau.behelpfull.ui.FeedWindow;
 import lt.bongibau.behelpfull.ui.Window;
 import lt.bongibau.behelpfull.ui.WindowManager;
+import lt.bongibau.behelpfull.users.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,9 +42,9 @@ public class RegisterAsValidatorWindow implements Window {
                     .getPassword());
 
             try {
-                Authentication.registerValidator(username, password);
+                User user = Authentication.registerValidator(username, password);
 
-                // TODO: un truc
+                WindowManager.getInstance().setCurrentWindow(new FeedWindow(user));
             } catch (UserAlreadyExistsException | CreateUserErrorException |
                      SQLException ex) {
                 errorLabel.setText(ex.getMessage());
