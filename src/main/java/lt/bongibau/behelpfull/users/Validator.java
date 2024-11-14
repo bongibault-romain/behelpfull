@@ -86,13 +86,17 @@ public class Validator extends User {
     }
 
     public void validateRequest(Request request) throws SQLException {
-        request.setStatus(Status.PUBLISHED);
+        if (request.getStatus()==Status.WAITING_FOR_APPROVAL) {
+            request.setStatus(Status.PUBLISHED);
+        }
         request.save();
     }
 
     public void refuseRequest(Request request, String reason) throws SQLException {
-        request.setFeedback(reason);
-        request.setStatus(Status.BANNED_HAMMER);
+        if (request.getStatus()==Status.WAITING_FOR_APPROVAL) {
+            request.setFeedback(reason);
+            request.setStatus(Status.BANNED_HAMMER);
+        }
         request.save();
     }
 }
