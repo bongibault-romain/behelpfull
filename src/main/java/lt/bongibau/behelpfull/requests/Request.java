@@ -218,7 +218,7 @@ public class Request {
         statement.execute();
     }
 
-    public List<Request> getAll(int page, int perPage) throws SQLException {
+    public static List<Request> getAll(int page, int perPage) throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
                 .prepareStatement("SELECT * from requests order by created_at desc limit ? offset ?");
 
