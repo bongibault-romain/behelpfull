@@ -9,11 +9,11 @@ import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 
-public class CreateRequestDialog extends JFrame {
+public class CreateRequestWindow extends JFrame implements Window {
 
     private final Asker user;
 
-    public CreateRequestDialog(Asker user) {
+    public CreateRequestWindow(Asker user) {
         this.user = user;
 
         this.setSize(400, 400);
@@ -56,7 +56,8 @@ public class CreateRequestDialog extends JFrame {
                         new Date(System.currentTimeMillis()),
                         Integer.parseInt(durationField.getText())
                 );
-                this.dispose();
+                
+                WindowManager.getInstance().setCurrentWindow(new FeedWindow(user));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Failed to create request: " + ex.getMessage());
             }

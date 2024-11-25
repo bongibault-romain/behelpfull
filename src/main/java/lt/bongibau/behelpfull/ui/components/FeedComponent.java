@@ -1,7 +1,8 @@
 package lt.bongibau.behelpfull.ui.components;
 
 import lt.bongibau.behelpfull.requests.Request;
-import lt.bongibau.behelpfull.ui.CreateRequestDialog;
+import lt.bongibau.behelpfull.ui.CreateRequestWindow;
+import lt.bongibau.behelpfull.ui.WindowManager;
 import lt.bongibau.behelpfull.users.Asker;
 import lt.bongibau.behelpfull.users.User;
 import lt.bongibau.behelpfull.users.Validator;
@@ -24,7 +25,7 @@ public class FeedComponent extends JPanel {
         if (user instanceof Asker) {
             JButton createRequestButton = new JButton("Create request");
             createRequestButton.addActionListener(e -> {
-                new CreateRequestDialog((Asker) user).setVisible(true);
+                WindowManager.getInstance().setCurrentWindow(new CreateRequestWindow((Asker) user));
             });
             this.add(createRequestButton);
         }
