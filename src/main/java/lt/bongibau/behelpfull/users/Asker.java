@@ -117,7 +117,7 @@ public class Asker extends User {
 
     public Request createRequest(String title, String description, Integer validatorId, int duration, Date date) {
         try {
-            Request request = Request.createRequest(title, description, this.getId(), validatorId, date, duration);
+            Request request = Request.create(title, description, this.getId(), validatorId, date, duration);
             return request;
         } catch (SQLException e) {
             throw new RuntimeException(e);

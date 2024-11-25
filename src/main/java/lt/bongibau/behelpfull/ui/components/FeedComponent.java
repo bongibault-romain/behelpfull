@@ -1,7 +1,11 @@
 package lt.bongibau.behelpfull.ui.components;
 
 import lt.bongibau.behelpfull.requests.Request;
+import lt.bongibau.behelpfull.ui.CreateRequestDialog;
+import lt.bongibau.behelpfull.users.Asker;
 import lt.bongibau.behelpfull.users.User;
+import lt.bongibau.behelpfull.users.Validator;
+import lt.bongibau.behelpfull.users.Volunteer;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -17,13 +21,39 @@ public class FeedComponent extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        if (user instanceof Asker) {
+            JButton createRequestButton = new JButton("Create request");
+            createRequestButton.addActionListener(e -> {
+                new CreateRequestDialog((Asker) user).setVisible(true);
+            });
+            this.add(createRequestButton);
+        }
+
         this.add(new JLabel("Feed of " + user.getUsername() + ", here is the list of requests:"));
 
         try {
             List<Request> requests = Request.getAll(page, 20);
 
-            for (Request request : requests) {
-                this.add(new VolunteerRequestComponent(user, request));
+            if (requests.isEmpty()) {
+                this.add(new JLabel("No requests found"));
+            }
+
+            if (user instanceof Asker) {
+                for (Request request : requests) {
+                    this.add(new AskerRequestComponent(user, request));
+                }
+            }
+
+            if (user instanceof Validator) {
+                for (Request request : requests) {
+                    this.add(new ValidatorRequestComponent(user, request));
+                }
+            }
+
+            if (user instanceof Volunteer) {
+                for (Request request : requests) {
+                    this.add(new VolunteerRequestComponent(user, request));
+                }
             }
         } catch (SQLException e) {
             // Create popup

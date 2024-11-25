@@ -41,7 +41,7 @@ public class Request {
         this.date = date;
     }
 
-    public static Request createRequest(String title, String description, int askerId, @Nullable Integer validatorId, @NotNull Date date, int duration) throws SQLException {
+    public static Request create(String title, String description, int askerId, @Nullable Integer validatorId, @NotNull Date date, int duration) throws SQLException {
 
         PreparedStatement requestInsertStatement = DatabaseManager.getInstance().getConnector()
                 .getConnection()
