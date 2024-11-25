@@ -75,9 +75,9 @@ public class Request {
                 description,
                 validatorId,
                 askerId,
-                result.getInt(6),
+                null,
                 validatorId == null ? Status.PUBLISHED : Status.WAITING_FOR_APPROVAL,
-                result.getDate(8),
+                new Date(System.currentTimeMillis()),
                 duration,
                 null,
                 date
