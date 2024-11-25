@@ -10,6 +10,21 @@ import java.util.List;
 
 public class Request {
 
+    public interface Observer {
+        void onRequestCreate(Request request);
+
+        void onRequestUpdate(Request request);
+    }
+
+    private static List<Observer> observers = new ArrayList<>();
+
+    public static void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public static void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
 
     private int id;
 
@@ -69,7 +84,7 @@ public class Request {
 
         if (!result.next()) return null;
 
-        return new Request(
+        Request request = new Request(
                 result.getInt(1),
                 title,
                 description,
@@ -82,6 +97,10 @@ public class Request {
                 null,
                 date
         );
+
+        observers.forEach(observer -> observer.onRequestCreate(request));
+
+        return request;
     }
 
     public void deleteRequest() throws SQLException {
@@ -216,6 +235,8 @@ public class Request {
         statement.setInt(11, this.id);
 
         statement.execute();
+
+        observers.forEach(observer -> observer.onRequestUpdate(this));
     }
 
     public static List<Request> getAll(int page, int perPage) throws SQLException {

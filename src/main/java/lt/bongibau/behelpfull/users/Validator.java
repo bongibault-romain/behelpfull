@@ -5,6 +5,7 @@ import lt.bongibau.behelpfull.requests.Request;
 import lt.bongibau.behelpfull.requests.Status;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -119,5 +120,56 @@ public class Validator extends User {
     @Override
     public String toString() {
         return this.getUsername() + " (id: " + this.getId() + ")";
+    }
+
+    public List<Request> getRequests() throws SQLException {
+        PreparedStatement statement = DatabaseManager.getInstance().getConnector()
+                .getConnection()
+                .prepareStatement("SELECT * FROM requests WHERE validator_id = ? AND status = ?");
+
+        statement.setInt(1, this.getId());
+        statement.setString(2, Status.WAITING_FOR_APPROVAL.toString());
+
+        ResultSet result = statement.executeQuery();
+        List<Request> requests = new ArrayList<>();
+
+        while (result.next()) {
+            int id = result.getInt("id");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            Integer validatorId = result.getInt("validator_id");
+
+            if (result.wasNull()) validatorId = null;
+
+            int askerId = result.getInt("asker_id");
+            Integer volunteerId = result.getInt("volunteer_id");
+
+            if (result.wasNull()) volunteerId = null;
+
+            Status status = Status.valueOf(result.getString("status"));
+            Date createdAt = result.getDate("created_at");
+            int duration = result.getInt("duration");
+            String feedback = result.getString("feedback");
+
+            if (result.wasNull()) feedback = null;
+
+            Date date = result.getDate("date");
+
+            requests.add(new Request(
+                    id,
+                    title,
+                    description,
+                    validatorId,
+                    askerId,
+                    volunteerId,
+                    status,
+                    createdAt,
+                    duration,
+                    feedback,
+                    date
+            ));
+        }
+
+        return requests;
     }
 }

@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class FeedComponent extends JPanel {
+public class FeedComponent extends JPanel implements Request.Observer {
     private final User user;
 
     private int page = 0;
@@ -22,6 +22,13 @@ public class FeedComponent extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        Request.addObserver(this);
+        this.update();
+    }
+
+    public void update() {
+        this.removeAll();
+        
         if (user instanceof Asker) {
             JButton createRequestButton = new JButton("Create request");
             createRequestButton.addActionListener(e -> {
@@ -33,25 +40,27 @@ public class FeedComponent extends JPanel {
         this.add(new JLabel("Feed of " + user.getUsername() + ", here is the list of requests:"));
 
         try {
-            List<Request> requests = Request.getAll(page, 20);
-
-            if (requests.isEmpty()) {
-                this.add(new JLabel("No requests found"));
-            }
-
             if (user instanceof Asker) {
+                List<Request> requests = ((Asker) user).getRequests();
+
                 for (Request request : requests) {
                     this.add(new AskerRequestComponent(user, request));
                 }
             }
 
             if (user instanceof Validator) {
+                List<Request> requests = ((Validator) user).getRequests();
+
                 for (Request request : requests) {
-                    this.add(new ValidatorRequestComponent(user, request));
+                    this.add(new ValidatorRequestComponent((Validator) user, request));
                 }
             }
 
             if (user instanceof Volunteer) {
+                List<Request> requests = ((Volunteer) user).getRequests();
+
+                this.add(new JLabel("My requests:"));
+
                 for (Request request : requests) {
                     this.add(new VolunteerRequestComponent(user, request));
                 }
@@ -60,5 +69,17 @@ public class FeedComponent extends JPanel {
             // Create popup
             JOptionPane.showMessageDialog(this, "Failed to load requests: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onRequestCreate(Request request) {
+        this.update();
+
+    }
+
+    @Override
+    public void onRequestUpdate(Request request) {
+        this.update();
+
     }
 }

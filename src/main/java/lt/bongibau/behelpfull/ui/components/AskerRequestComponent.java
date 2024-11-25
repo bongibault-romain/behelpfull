@@ -34,6 +34,9 @@ public class AskerRequestComponent extends JPanel {
         content.add(textComponent);
         content.add(cancelButton);
 
+        cancelButton.addActionListener(e -> {
+        });
+
         this.add(requestLabel);
         this.add(content);
     }
