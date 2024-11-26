@@ -33,9 +33,10 @@ public class CreateRequestWindow extends JFrame implements Window {
 
         JLabel validatorLabel = new JLabel("Validator (optional)");
         // select
-        JComboBox<User> validatorComboBox = new JComboBox<>();
+        JComboBox<Validator> validatorComboBox = new JComboBox<>();
         // load all validators
         try {
+            validatorComboBox.addItem(null);
             for (Validator validator : Validator.getAll()) {
                 validatorComboBox.addItem(validator);
             }
@@ -43,10 +44,10 @@ public class CreateRequestWindow extends JFrame implements Window {
             throw new RuntimeException(e);
         }
 
-        Validator validator = (Validator) validatorComboBox.getSelectedItem();
-
         JButton createButton = new JButton("Create");
         createButton.addActionListener(e -> {
+            Validator validator = (Validator) validatorComboBox.getSelectedItem();
+            
             try {
                 Request.create(
                         titleField.getText(),
@@ -56,7 +57,7 @@ public class CreateRequestWindow extends JFrame implements Window {
                         new Date(System.currentTimeMillis()),
                         Integer.parseInt(durationField.getText())
                 );
-                
+
                 WindowManager.getInstance().setCurrentWindow(new FeedWindow(user));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Failed to create request: " + ex.getMessage());

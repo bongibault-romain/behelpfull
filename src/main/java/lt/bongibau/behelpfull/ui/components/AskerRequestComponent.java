@@ -29,6 +29,8 @@ public class AskerRequestComponent extends JPanel {
         textComponent.setLineWrap(true);
         textComponent.setRows(2);
 
+        JLabel statusLabel = new JLabel("Status: " + request.getStatus());
+
         JButton cancelButton = new JButton("Cancel");
 
         content.add(textComponent);
@@ -43,6 +45,7 @@ public class AskerRequestComponent extends JPanel {
         });
 
         this.add(requestLabel);
+        this.add(statusLabel);
         this.add(content);
     }
 }
