@@ -203,6 +203,7 @@ public class Volunteer extends User {
     public void acceptRequest(Request request) throws SQLException {
         if (request.getStatus() == Status.PUBLISHED) {
             request.setStatus(Status.ASSIGNED);
+            request.setVolunteerId(this.getId());
         }
         request.save();
     }

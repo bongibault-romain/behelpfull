@@ -10,7 +10,7 @@ public class VolunteerRequestComponent extends JPanel {
     private final Volunteer user;
     private final Request request;
 
-    public VolunteerRequestComponent(User user, Request request) {
+    public VolunteerRequestComponent(Volunteer user, Request request) {
         this.user = user;
         this.request = request;
 
