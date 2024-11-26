@@ -14,6 +14,8 @@ public class Request {
         void onRequestCreate(Request request);
 
         void onRequestUpdate(Request request);
+
+        void onRequestDelete(Request request);
     }
 
     private static List<Observer> observers = new ArrayList<>();
@@ -110,6 +112,8 @@ public class Request {
 
         deleteRequestStatement.setInt(1, this.getId());
         deleteRequestStatement.execute();
+
+        observers.forEach(observer -> observer.onRequestDelete(this));
     }
 
     public int getId() {

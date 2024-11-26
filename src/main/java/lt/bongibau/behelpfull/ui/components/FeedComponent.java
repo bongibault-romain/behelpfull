@@ -20,15 +20,15 @@ public class FeedComponent extends JPanel implements Request.Observer {
     public FeedComponent(User user) {
         this.user = user;
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         Request.addObserver(this);
         this.update();
     }
 
     public void update() {
+        this.setVisible(false);
         this.removeAll();
-        
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         if (user instanceof Asker) {
             JButton createRequestButton = new JButton("Create request");
             createRequestButton.addActionListener(e -> {
@@ -44,7 +44,7 @@ public class FeedComponent extends JPanel implements Request.Observer {
                 List<Request> requests = ((Asker) user).getRequests();
 
                 for (Request request : requests) {
-                    this.add(new AskerRequestComponent(user, request));
+                    this.add(new AskerRequestComponent((Asker) user, request));
                 }
             }
 
@@ -69,17 +69,22 @@ public class FeedComponent extends JPanel implements Request.Observer {
             // Create popup
             JOptionPane.showMessageDialog(this, "Failed to load requests: " + e.getMessage());
         }
+
+        this.setVisible(true);
     }
 
     @Override
     public void onRequestCreate(Request request) {
         this.update();
-
     }
 
     @Override
     public void onRequestUpdate(Request request) {
         this.update();
+    }
 
+    @Override
+    public void onRequestDelete(Request request) {
+        this.update();
     }
 }

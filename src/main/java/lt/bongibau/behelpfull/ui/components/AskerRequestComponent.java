@@ -1,15 +1,15 @@
 package lt.bongibau.behelpfull.ui.components;
 
 import lt.bongibau.behelpfull.requests.Request;
-import lt.bongibau.behelpfull.users.User;
+import lt.bongibau.behelpfull.users.Asker;
 
 import javax.swing.*;
 
 public class AskerRequestComponent extends JPanel {
-    private final User user;
+    private final Asker user;
     private final Request request;
 
-    public AskerRequestComponent(User user, Request request) {
+    public AskerRequestComponent(Asker user, Request request) {
         this.user = user;
         this.request = request;
 
@@ -35,6 +35,11 @@ public class AskerRequestComponent extends JPanel {
         content.add(cancelButton);
 
         cancelButton.addActionListener(e -> {
+            try {
+                user.deleteRequest(request);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Failed to cancel request: " + ex.getMessage());
+            }
         });
 
         this.add(requestLabel);
