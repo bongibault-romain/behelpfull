@@ -243,12 +243,11 @@ public class Request {
         observers.forEach(observer -> observer.onRequestUpdate(this));
     }
 
-    public static List<Request> getAll(int page, int perPage) throws SQLException {
+    public static List<Request> getAll() throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
-                .prepareStatement("SELECT * from requests order by created_at desc limit ? offset ?");
+                .prepareStatement("SELECT * from requests where volunteer_id IS NULL AND status = ? order by created_at");
 
-        statement.setInt(1, perPage);
-        statement.setInt(2, page * perPage);
+        statement.setString(1, Status.PUBLISHED.toString());
         statement.execute();
 
         ResultSet result = statement.getResultSet();

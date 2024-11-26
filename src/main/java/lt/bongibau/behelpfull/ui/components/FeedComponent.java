@@ -15,8 +15,6 @@ import java.util.List;
 public class FeedComponent extends JPanel implements Request.Observer {
     private final User user;
 
-    private int page = 0;
-
     public FeedComponent(User user) {
         this.user = user;
 
@@ -58,11 +56,18 @@ public class FeedComponent extends JPanel implements Request.Observer {
 
             if (user instanceof Volunteer) {
                 List<Request> requests = ((Volunteer) user).getRequests();
+                List<Request> allRequests = Request.getAll();
 
                 this.add(new JLabel("My requests:"));
 
                 for (Request request : requests) {
-                    this.add(new VolunteerRequestComponent(user, request));
+                    this.add(new VolunteerRequestComponent((Volunteer) user, request));
+                }
+
+                this.add(new JLabel("All requests:"));
+
+                for (Request request : allRequests) {
+                    this.add(new VolunteerRequestComponent((Volunteer) user, request));
                 }
             }
         } catch (SQLException e) {

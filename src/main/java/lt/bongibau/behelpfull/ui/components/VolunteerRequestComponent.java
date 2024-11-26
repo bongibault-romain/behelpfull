@@ -1,12 +1,13 @@
 package lt.bongibau.behelpfull.ui.components;
 
 import lt.bongibau.behelpfull.requests.Request;
-import lt.bongibau.behelpfull.users.User;
+import lt.bongibau.behelpfull.requests.Status;
+import lt.bongibau.behelpfull.users.Volunteer;
 
 import javax.swing.*;
 
 public class VolunteerRequestComponent extends JPanel {
-    private final User user;
+    private final Volunteer user;
     private final Request request;
 
     public VolunteerRequestComponent(User user, Request request) {
@@ -29,10 +30,21 @@ public class VolunteerRequestComponent extends JPanel {
         textComponent.setLineWrap(true);
         textComponent.setRows(2);
 
-        JButton acceptButton = new JButton("Accept");
+        if (!request.getStatus().equals(Status.ASSIGNED)) {
+            JButton acceptButton = new JButton("Accept");
+
+            content.add(acceptButton);
+
+            acceptButton.addActionListener(e -> {
+                try {
+                    user.acceptRequest(request);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to accept request: " + ex.getMessage());
+                }
+            });
+        }
 
         content.add(textComponent);
-        content.add(acceptButton);
 
         this.add(requestLabel);
         this.add(content);
