@@ -19,19 +19,15 @@ public abstract class UserTest {
     @BeforeEach
     void setUp() throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
-                .prepareStatement("DELETE FROM users WHERE username = ?");
-
-        statement.setString(1, TEST_USERNAME);
-
+                .prepareStatement("DELETE FROM users");
+        
         statement.execute();
     }
 
     @AfterEach
     void tearDown() throws SQLException {
         PreparedStatement statement = DatabaseManager.getInstance().getConnector().getConnection()
-                .prepareStatement("DELETE FROM users WHERE username = ?");
-
-        statement.setString(1, TEST_USERNAME);
+                .prepareStatement("DELETE FROM users");
 
         statement.execute();
     }

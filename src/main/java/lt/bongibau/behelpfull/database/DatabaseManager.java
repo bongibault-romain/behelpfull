@@ -2,22 +2,38 @@ package lt.bongibau.behelpfull.database;
 
 public class DatabaseManager {
 
-    private static DatabaseManager instance;
-
-    private final DatabaseConnector connector;
-
-    public DatabaseManager() {
-        this.connector = new DatabaseConnector(
-                DatabaseCredentials.HOST,
-                DatabaseCredentials.PORT,
-                DatabaseCredentials.DATABASE,
-                DatabaseCredentials.USERNAME,
-                DatabaseCredentials.PASSWORD
-        );
+    public static enum Environment {
+        PRODUCTION,
+        TEST
     }
 
-    public DatabaseConnector getConnector() {
-        return connector;
+    private static DatabaseManager instance;
+
+    private final Database productionConnector;
+
+    private final Database testConnector;
+
+    public DatabaseManager() {
+        this.productionConnector = new ProductionDatabaseConnector(
+                DatabaseCredentials.Production.HOST,
+                DatabaseCredentials.Production.PORT,
+                DatabaseCredentials.Production.DATABASE,
+                DatabaseCredentials.Production.USERNAME,
+                DatabaseCredentials.Production.PASSWORD
+        );
+
+        this.testConnector = new TestDatabaseConnector(DatabaseCredentials.Test.FILE);
+    }
+
+    public Database getConnector() {
+        return getConnector(Environment.PRODUCTION);
+    }
+
+    public Database getConnector(Environment environment) {
+        return switch (environment) {
+            case PRODUCTION -> productionConnector;
+            case TEST -> testConnector;
+        };
     }
 
     public static DatabaseManager getInstance() {

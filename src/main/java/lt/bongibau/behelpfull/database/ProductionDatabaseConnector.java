@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnector {
+public class ProductionDatabaseConnector implements Database {
     private Connection connection;
 
     private final String host;
@@ -17,7 +17,7 @@ public class DatabaseConnector {
 
     private final String password;
 
-    public DatabaseConnector(String host, int port, String database, String username, String password) {
+    public ProductionDatabaseConnector(String host, int port, String database, String username, String password) {
         this.host = host;
         this.database = database;
         this.username = username;
@@ -40,6 +40,7 @@ public class DatabaseConnector {
         }
     }
 
+    @Override
     public Connection getConnection() throws SQLException {
         if (this.connection == null) {
             this.createConnection();
